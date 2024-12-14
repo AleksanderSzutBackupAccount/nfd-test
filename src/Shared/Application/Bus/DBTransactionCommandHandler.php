@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Src\Shared\Application\Bus;
 
-use Src\Shared\Domain\Bus\CommandInterface;
 use Illuminate\Contracts\Bus\Dispatcher;
+use Src\Shared\Domain\Bus\CommandInterface;
 
 class DBTransactionCommandHandler implements DBTransactionCommandHandlerInterface
 {

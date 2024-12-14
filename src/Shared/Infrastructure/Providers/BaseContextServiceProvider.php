@@ -42,18 +42,12 @@ abstract class BaseContextServiceProvider extends ServiceProvider
      */
     protected array $commands = [];
 
-    /**
-     * @return void
-     */
     public function register(): void
     {
         $this->registerProviders();
         $this->registerCommands();
     }
 
-    /**
-     * @return void
-     */
     public function boot(): void
     {
         $this->bootBinds();
@@ -64,8 +58,6 @@ abstract class BaseContextServiceProvider extends ServiceProvider
 
     /**
      * Register the application's policies.
-     *
-     * @return void
      */
     public function bootPolicies(): void
     {
@@ -74,9 +66,6 @@ abstract class BaseContextServiceProvider extends ServiceProvider
         }
     }
 
-    /**
-     * @return void
-     */
     protected function registerProviders(): void
     {
         foreach ($this->providers as $provider) {
@@ -84,9 +73,6 @@ abstract class BaseContextServiceProvider extends ServiceProvider
         }
     }
 
-    /**
-     * @return void
-     */
     protected function bootBinds(): void
     {
         foreach ($this->binds as $key => $bind) {
@@ -94,9 +80,6 @@ abstract class BaseContextServiceProvider extends ServiceProvider
         }
     }
 
-    /**
-     * @return void
-     */
     protected function bootUseCases(): void
     {
         /** @var Dispatcher $dispatcher */
@@ -104,9 +87,6 @@ abstract class BaseContextServiceProvider extends ServiceProvider
         $dispatcher->map($this->useCases);
     }
 
-    /**
-     * @return void
-     */
     protected function bootRouteBinds(): void
     {
         foreach ($this->routeBinds as $key => $bind) {
@@ -114,9 +94,6 @@ abstract class BaseContextServiceProvider extends ServiceProvider
         }
     }
 
-    /**
-     * @return void
-     */
     protected function registerCommands(): void
     {
         $this->commands($this->commands);
