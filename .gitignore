@@ -22,3 +22,5 @@ yarn-error.log
 /.vscode
 /.zed
 .deptrac.cache
+coverage-report.xml
+coverage
