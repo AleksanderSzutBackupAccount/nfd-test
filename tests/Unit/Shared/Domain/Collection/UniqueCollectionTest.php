@@ -6,14 +6,14 @@ namespace Tests\Unit\Shared\Domain\Collection;
 
 use Illuminate\Support\Str;
 use InvalidArgumentException;
-use Src\Shared\Domain\Collection;
+use Src\Shared\Domain\Collection\Collection;
 use Src\Shared\Domain\ComparableCollectionInterface;
+use Tests\TestCase;
 use Tests\Unit\Shared\Domain\Collection\Dummies\DummyComparableDto;
 use Tests\Unit\Shared\Domain\Collection\Dummies\DummyDto;
 use Tests\Unit\Shared\Domain\Collection\Dummies\DummyEntity;
 use Tests\Unit\Shared\Domain\Collection\Dummies\DummyEnum;
 use Tests\Unit\Shared\Domain\Collection\Dummies\DummyNestedDto;
-use Tests\TestCase;
 
 class UniqueCollectionTest extends TestCase
 {

@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Src\Shared\Domain;
+namespace Src\Shared\Domain\Collection;
 
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
+use Src\Shared\Domain\Assert;
 use Src\Shared\Domain\BoxableTrait;
+use Src\Shared\Domain\ComparableCollectionInterface;
 use Src\Shared\Domain\ComparableInterface;
 
 /**

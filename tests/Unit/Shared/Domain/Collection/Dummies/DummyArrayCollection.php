@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Shared\Domain\Collection\Dummies;
 
-use Src\Shared\Domain\Collection;
+use Src\Shared\Domain\Collection\Collection;
 
 /**
  * @extends Collection<DummyItemArray>
