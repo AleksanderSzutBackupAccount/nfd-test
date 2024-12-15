@@ -8,7 +8,9 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
-use Src\Company\Infrastructure\Eloquent\CompanyEloquentModel;
+use Illuminate\Support\Facades\Event;
+use Src\Company\Domain\Events\CompanyCreatedEvent;
+use Src\Company\Infrastructure\Eloquent\Models\CompanyEloquentModel;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
@@ -20,6 +22,7 @@ final class CompanyControllerTest extends TestCase
 
     public function test_create_success(): void
     {
+        Event::fake([CompanyCreatedEvent::class]);
         $payload = $this->getPayload();
         $payload['nip'] = $this->faker->uuid;
 
@@ -28,6 +31,7 @@ final class CompanyControllerTest extends TestCase
 
         $this->assertDatabaseCount('companies', 1);
         $this->assertDatabaseHas('companies', $payload);
+        Event::assertDispatched(CompanyCreatedEvent::class);
     }
 
     public function test_index_success(): void
@@ -68,7 +72,7 @@ final class CompanyControllerTest extends TestCase
         $this->assertDatabaseCount('companies', 0);
     }
 
-    private function getEndpoint(int $companyId): string
+    private function getEndpoint(string $companyId): string
     {
         return sprintf('api/companies/%s', $companyId);
     }
@@ -94,8 +98,8 @@ final class CompanyControllerTest extends TestCase
         return [
             'name' => $this->faker->company,
             'address' => $this->faker->address,
-            'city' => $this->faker->city,
             'postal_code' => $this->faker->postcode,
+            'city' => $this->faker->city,
         ];
     }
 }

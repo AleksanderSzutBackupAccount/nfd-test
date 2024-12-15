@@ -2,23 +2,27 @@
 
 declare(strict_types=1);
 
-namespace Src\Company\Infrastructure\Eloquent;
+namespace Src\Company\Infrastructure\Eloquent\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Src\Company\Infrastructure\Eloquent\Factories\EmployeeEloquentFactory;
+use Src\Company\Infrastructure\Eloquent\Models\CompanyEloquentModel;
 use Src\Shared\Infrastructure\Models\CastableModel;
 
 /**
- * @property-read int $id
+ * @property-read string $id
  * @property string $first_name
  * @property string $last_name
  * @property string $email
- * @property string $phone
+ * @property ?string $phone
  */
 final class EmployeeEloquentModel extends CastableModel
 {
     /** @use HasFactory<EmployeeEloquentFactory> */
     use HasFactory;
+    use HasUuids;
 
     protected $table = 'employees';
 
@@ -30,14 +34,6 @@ final class EmployeeEloquentModel extends CastableModel
     protected $dates = ['created_at', 'updated_at'];
 
     protected $casts = [];
-
-    /**
-     * @return BelongsTo<CompanyEloquentModel, $this>
-     */
-    public function company(): BelongsTo
-    {
-        return $this->belongsTo(CompanyEloquentModel::class);
-    }
 
     protected static function newFactory(): EmployeeEloquentFactory
     {

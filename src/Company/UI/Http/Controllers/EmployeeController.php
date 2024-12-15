@@ -6,16 +6,16 @@ namespace Src\Company\UI\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Src\Company\Infrastructure\Eloquent\EmployeeEloquentModel;
+use Src\Company\Infrastructure\Eloquent\Models\EmployeeEloquentModel;
 
 final class EmployeeController extends Controller
 {
-    public function index(int $companyId)
+    public function index(string $companyId)
     {
         return EmployeeEloquentModel::query()->where('company_id', $companyId)->get();
     }
 
-    public function create(Request $request, int $companyId)
+    public function create(Request $request, string $companyId)
     {
         $validated = $request->validate([
             'first_name' => 'required|string',
@@ -29,12 +29,12 @@ final class EmployeeController extends Controller
         return EmployeeEloquentModel::query()->create($validated);
     }
 
-    public function get(int $companyId, int $id)
+    public function get(string $companyId, string $id)
     {
         return EmployeeEloquentModel::query()->findOrFail($id);
     }
 
-    public function update(Request $request, int $companyId, int $id)
+    public function update(Request $request, string $companyId, string $id)
     {
         $employee = EmployeeEloquentModel::query()->findOrFail($id);
         $validated = $request->validate([
@@ -48,7 +48,7 @@ final class EmployeeController extends Controller
         return $employee;
     }
 
-    public function delete(int $companyId, int $id)
+    public function delete(string $companyId, string $id)
     {
         $employee = EmployeeEloquentModel::query()->findOrFail($id);
         $employee->deleteOrFail();

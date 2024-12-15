@@ -11,36 +11,31 @@ use Stringable;
 
 abstract readonly class UuidValueObject implements ComparableInterface, Stringable, ValueObjectInterface
 {
-    final public function __construct(public string $uuid)
+    final public function __construct(public string $value)
     {
         $this->validate();
     }
 
     public function __toString(): string
     {
-        return $this->uuid;
+        return $this->value;
     }
 
     public function value(): string
     {
-        return $this->uuid;
-    }
-
-    public static function fromString(string $uuid): static
-    {
-        return new static($uuid);
+        return $this->value;
     }
 
     public function validate(): void
     {
-        if (! preg_match('/^[a-f\d]{8}(-[a-f\d]{4}){4}[a-f\d]{8}$/i', $this->uuid)) {
+        if (! Uuid::isValid($this->value)) {
             throw new InvalidArgumentException('Invalid UUID');
         }
     }
 
-    public static function generate(): static
+    final public static function random(): self
     {
-        return new static(Uuid::uuid4()->toString());
+        return new static(RamseyUuid::uuid4()->toString());
     }
 
     /**
@@ -48,6 +43,6 @@ abstract readonly class UuidValueObject implements ComparableInterface, Stringab
      */
     public function equals(ComparableInterface $compare): bool
     {
-        return $this->uuid === $compare->uuid;
+        return $this->value === $compare->value;
     }
 }

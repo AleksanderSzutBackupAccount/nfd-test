@@ -8,8 +8,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
-use Src\Company\Infrastructure\Eloquent\CompanyEloquentModel;
-use Src\Company\Infrastructure\Eloquent\EmployeeEloquentModel;
+use Src\Company\Infrastructure\Eloquent\Models\CompanyEloquentModel;
+use Src\Company\Infrastructure\Eloquent\Models\EmployeeEloquentModel;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
@@ -74,12 +74,12 @@ final class EmployeeControllerTest extends TestCase
         $this->assertDatabaseCount('employees', 0);
     }
 
-    private function getEndpoint(int $companyId): string
+    private function getEndpoint(string $companyId): string
     {
         return sprintf('api/companies/%s/employees', $companyId);
     }
 
-    private function getEndpointFind(int $companyId, int $employeeId): string
+    private function getEndpointFind(string $companyId, string $employeeId): string
     {
         return sprintf('api/companies/%s/employees/%s', $companyId, $employeeId);
     }

@@ -7,21 +7,28 @@ namespace Src\Company\UI\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Src\Company\Infrastructure\Eloquent\CompanyEloquentModel;
+use Ramsey\Uuid\Uuid;
+use Src\Company\Application\Create\CreateCompanyCommand;
+use Src\Company\Infrastructure\Eloquent\Models\CompanyEloquentModel;
+use Src\Company\UI\Http\Requests\CreateCompanyRequest;
+use Src\Shared\Application\Bus\CommandHandlerInterface;
 
 final class CompanyController extends Controller
 {
-    public function create(Request $request): JsonResponse
-    {
-        $validated = $request->validate([
-            'name' => 'required|string',
-            'nip' => 'required|string|unique:companies',
-            'address' => 'required|string',
-            'city' => 'required|string',
-            'postal_code' => 'required|string',
-        ]);
+    public function __construct(private CommandHandlerInterface $commandHandler) {}
 
-        CompanyEloquentModel::query()->create($validated);
+    public function create(CreateCompanyRequest $request): JsonResponse
+    {
+        $this->commandHandler->handle(
+            new CreateCompanyCommand(
+                Uuid::uuid4()->toString(),
+                $request->name,
+                $request->nip,
+                $request->city,
+                $request->postal_code,
+                $request->address
+            )
+        );
 
         return new JsonResponse([], JsonResponse::HTTP_CREATED);
     }
@@ -31,7 +38,7 @@ final class CompanyController extends Controller
         return new JsonResponse(CompanyEloquentModel::all()->toArray());
     }
 
-    public function get(int $id): JsonResponse
+    public function get(string $id): JsonResponse
     {
         /** @var CompanyEloquentModel $company */
         $company = CompanyEloquentModel::query()->findOrFail($id);
@@ -39,7 +46,7 @@ final class CompanyController extends Controller
         return new JsonResponse($company->toArray());
     }
 
-    public function update(Request $request, int $id): JsonResponse
+    public function update(Request $request, string $id): JsonResponse
     {
         /** @var CompanyEloquentModel $company */
         $company = CompanyEloquentModel::query()->findOrFail($id);
@@ -54,7 +61,7 @@ final class CompanyController extends Controller
         return new JsonResponse([]);
     }
 
-    public function delete(int $id): JsonResponse
+    public function delete(string $id): JsonResponse
     {
         /** @var CompanyEloquentModel $company */
         $company = CompanyEloquentModel::query()->findOrFail($id);
