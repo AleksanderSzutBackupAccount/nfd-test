@@ -6,7 +6,6 @@ namespace Src\Company\Infrastructure\Eloquent\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Src\Company\Domain\Company;
 use Src\Company\Domain\CompanyFullAddress;
 use Src\Company\Domain\ValueObjects\CompanyAddress;
@@ -31,6 +30,7 @@ final class CompanyEloquentModel extends CastableModel
 {
     /** @use HasFactory<CompanyEloquentFactory> */
     use HasFactory;
+
     use HasUuids;
 
     protected $table = 'companies';
@@ -58,7 +58,7 @@ final class CompanyEloquentModel extends CastableModel
             new CompanyId($this->id),
             new CompanyName($this->name),
             new CompanyNip($this->nip),
-            new CompanyFullAddress(new CompanyCity($this->city),new CompanyPostalCode($this->postal_code),new CompanyAddress($this->address))
+            new CompanyFullAddress(new CompanyCity($this->city), new CompanyPostalCode($this->postal_code), new CompanyAddress($this->address))
         );
     }
 }

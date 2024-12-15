@@ -10,12 +10,13 @@ use Src\Company\Domain\CompanyRepositoryInterface;
 use Src\Company\Infrastructure\Eloquent\Repositories\CompanyEloquentRepository;
 use Src\Shared\Infrastructure\Providers\BaseContextServiceProvider;
 
- final class CompanyServiceProvider extends BaseContextServiceProvider
+final class CompanyServiceProvider extends BaseContextServiceProvider
 {
     protected array $binds = [
-        CompanyRepositoryInterface::class => CompanyEloquentRepository::class
+        CompanyRepositoryInterface::class => CompanyEloquentRepository::class,
     ];
+
     protected array $useCases = [
-        CreateCompanyCommand::class => CreateCompanyHandler::class
+        CreateCompanyCommand::class => CreateCompanyHandler::class,
     ];
 }

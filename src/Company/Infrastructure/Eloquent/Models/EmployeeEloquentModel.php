@@ -6,9 +6,7 @@ namespace Src\Company\Infrastructure\Eloquent\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Src\Company\Infrastructure\Eloquent\Factories\EmployeeEloquentFactory;
-use Src\Company\Infrastructure\Eloquent\Models\CompanyEloquentModel;
 use Src\Shared\Infrastructure\Models\CastableModel;
 
 /**
@@ -22,6 +20,7 @@ final class EmployeeEloquentModel extends CastableModel
 {
     /** @use HasFactory<EmployeeEloquentFactory> */
     use HasFactory;
+
     use HasUuids;
 
     protected $table = 'employees';

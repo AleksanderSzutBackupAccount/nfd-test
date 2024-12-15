@@ -24,14 +24,14 @@ final readonly class CompanyEloquentRepository implements CompanyRepositoryInter
 
     public function save(Company $company): void
     {
-       CompanyEloquentModel::query()->updateOrCreate([
-           'id' => $company->id,
-           'name' => $company->name,
-           'nip' => $company->companyNip,
-           'address'=> $company->address->address,
-           'city' => $company->address->city,
-           'postal_code' => $company->address->postalCode,
-       ]);
+        CompanyEloquentModel::query()->updateOrCreate([
+            'id' => $company->id,
+            'name' => $company->name,
+            'nip' => $company->companyNip,
+            'address' => $company->address->address,
+            'city' => $company->address->city,
+            'postal_code' => $company->address->postalCode,
+        ]);
     }
 
     public function delete(Company $company): void
