@@ -19,12 +19,12 @@ final readonly class CompanyEloquentRepository implements CompanyRepositoryInter
 
     public function findById(CompanyId $id): ?Company
     {
-        // TODO: Implement findById() method.
+        return CompanyEloquentModel::query()->find($id)?->toEntity();
     }
 
     public function save(Company $company): void
     {
-        CompanyEloquentModel::query()->updateOrCreate([
+        CompanyEloquentModel::query()->updateOrCreate(['id' => $company->id], [
             'id' => $company->id,
             'name' => $company->name,
             'nip' => $company->companyNip,

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Src\Company\Domain;
 
 use Src\Company\Domain\Events\CompanyCreatedEvent;
+use Src\Company\Domain\Events\CompanyUpdatedEvent;
 use Src\Company\Domain\ValueObjects\CompanyId;
 use Src\Company\Domain\ValueObjects\CompanyName;
 use Src\Company\Domain\ValueObjects\CompanyNip;
@@ -14,9 +15,9 @@ final class Company extends AggregateRoot
 {
     public function __construct(
         public readonly CompanyId $id,
-        public readonly CompanyName $name,
+        public CompanyName $name,
         public readonly CompanyNip $companyNip,
-        public readonly CompanyFullAddress $address,
+        public CompanyFullAddress $address,
     ) {}
 
     public static function create(
@@ -30,5 +31,15 @@ final class Company extends AggregateRoot
         $company->record(new CompanyCreatedEvent($id));
 
         return $company;
+    }
+
+    public  function update(
+        CompanyName $name,
+        CompanyFullAddress $address,
+    ): void {
+        $this->address = $address;
+        $this->name = $name;
+
+        $this->record(new CompanyUpdatedEvent($this->id));
     }
 }
