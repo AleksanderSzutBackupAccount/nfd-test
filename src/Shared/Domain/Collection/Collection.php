@@ -18,8 +18,6 @@ use Src\Shared\Domain\ComparableInterface;
  */
 abstract class Collection implements Countable, IteratorAggregate
 {
-    /** @use BoxableTrait<T> */
-    use BoxableTrait;
 
     /**
      * @var T[] $items
@@ -78,100 +76,8 @@ abstract class Collection implements Countable, IteratorAggregate
     }
 
     /**
-     * use for one or multiple (array of) arguments in constructor
-     * @param array<int, mixed> $items
-     * @return static
-     */
-    final public static function boxFromArray(array $items): static
-    {
-        $collection = new static([]);
-
-        foreach ($items as $item) {
-            $object = $collection->box($item);
-            $collection->push($object);
-        }
-
-        return $collection;
-    }
-
-    /**
-     * use for one or multiple Enum values
-     * @param array<string|int> $items
-     * @return static
-     */
-    final public static function boxFromEnumValues(array $items): static
-    {
-        $collection = new static([]);
-
-        foreach ($items as $item) {
-            $object = $collection->boxEnumValue($item);
-            $collection->push($object);
-        }
-
-        return $collection;
-    }
-
-    /**
-     * use for one argument in constructor
-     * @param array<int, mixed> $items
-     * @return static
-     */
-    final public static function boxSimpleFromArray(array $items): static
-    {
-        $collection = new static([]);
-
-        foreach ($items as $item) {
-            $object = $collection->boxSimple($item);
-            $collection->push($object);
-        }
-
-        return $collection;
-    }
-
-    /**
-     * use for multiple (array of) arguments in constructor
-     * @param array<int, array<int, mixed>> $items
-     * @return static
-     */
-    final public static function boxComplexFromArray(array $items): static
-    {
-        $collection = new static([]);
-
-        foreach ($items as $item) {
-            $object = $collection->boxComplex($item);
-            $collection->push($object);
-        }
-
-        return $collection;
-    }
-
-    /**
-     * @return array<int, mixed>
-     */
-    final public function unboxToArray(): array
-    {
-        return $this->map(fn ($item) => $this->unbox($item));
-    }
-
-    /**
-     * @return array<int, mixed>
-     */
-    final public function unboxSimpleToArray(): array
-    {
-        return $this->map(fn ($item) => $this->unboxSimple($item));
-    }
-
-    /**
-     * @return array<int, mixed>
-     */
-    final public function unboxComplexToArray(): array
-    {
-        return $this->map(fn ($item) => $this->unboxComplex($item));
-    }
-
-    /**
      * @param callable(T): mixed $closure
-     * @return array<int, mixed>
+     * @return mixed[]
      */
     final public function map(callable $closure): array
     {
@@ -296,7 +202,7 @@ abstract class Collection implements Countable, IteratorAggregate
         return new static(array_merge($this->items, $collection->items));
     }
 
-    /** @return  array<int, T>  */
+    /** @return T[]  */
     public function items(): array
     {
         return $this->items;
@@ -307,6 +213,10 @@ abstract class Collection implements Countable, IteratorAggregate
         return $this->count() === 0;
     }
 
+    /**
+     * @param Collection<T> $collection
+     * @return bool
+     */
     final public function isEqual(self $collection): bool
     {
         if ($this->count() !== $collection->count()) {
@@ -320,6 +230,10 @@ abstract class Collection implements Countable, IteratorAggregate
         );
     }
 
+    /**
+     * @param Collection<T> $collection
+     * @return bool
+     */
     final public function isEqualWithOrder(self $collection): bool
     {
         if ($this->count() !== $collection->count()) {
