@@ -9,9 +9,10 @@ use Tests\TestCase;
 
 final class CompanyControllerTest extends TestCase
 {
-   private const JSON_STRUCTURE = ['id', 'name', 'email', 'address', 'city', 'postcode'];
+    private const JSON_STRUCTURE = ['id', 'name', 'email', 'address', 'city', 'postcode'];
 
-    public function testCreateSuccess(): void {
+    public function test_create_success(): void
+    {
         $response = $this->post('api/companies', [
             'name' => 'Test Company',
             'email' => 'test@test.com',
@@ -22,13 +23,15 @@ final class CompanyControllerTest extends TestCase
         $response->assertStatus(JsonResponse::HTTP_CREATED);
     }
 
-    public function testIndexSuccess(): void {
+    public function test_index_success(): void
+    {
         $response = $this->get('api/companies');
         $response->assertStatus(JsonResponse::HTTP_OK);
         $response->assertJsonStructure(['*' => self::JSON_STRUCTURE]);
     }
 
-    public function testGetSuccess(): void {
+    public function test_get_success(): void
+    {
         $companyId = 1;
 
         $response = $this->get($this->getEndpoint($companyId));
@@ -36,13 +39,16 @@ final class CompanyControllerTest extends TestCase
         $response->assertJsonStructure(self::JSON_STRUCTURE);
     }
 
-    public function testUpdateSuccess(): void {
+    public function test_update_success(): void
+    {
         $companyId = 1;
 
         $response = $this->put($this->getEndpoint($companyId));
         $response->assertStatus(JsonResponse::HTTP_OK);
     }
-    public function testDeleteSuccess(): void {
+
+    public function test_delete_success(): void
+    {
         $companyId = 1;
 
         $response = $this->put($this->getEndpoint($companyId));
@@ -53,6 +59,4 @@ final class CompanyControllerTest extends TestCase
     {
         return sprintf('api/companies/%s', $companyId);
     }
-
-
 }

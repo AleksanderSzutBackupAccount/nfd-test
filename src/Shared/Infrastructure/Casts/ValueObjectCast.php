@@ -17,11 +17,11 @@ final readonly class ValueObjectCast implements CastsAttributes
     private const INVALID_CLASS_OBJECT = 'Type of cast should be an instance of %s';
 
     /**
-     * @param class-string<ValueObjectInterface> $valueObjectClass
+     * @param  class-string<ValueObjectInterface>  $valueObjectClass
      */
     public function __construct(private string $valueObjectClass)
     {
-        if (!is_subclass_of($this->valueObjectClass, ValueObjectInterface::class)) {
+        if (! is_subclass_of($this->valueObjectClass, ValueObjectInterface::class)) {
             throw new InvalidArgumentException(sprintf(self::INVALID_CLASS_OBJECT, $this->valueObjectClass));
         }
     }

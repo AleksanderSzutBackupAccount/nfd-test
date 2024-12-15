@@ -6,6 +6,7 @@ namespace Tests\Unit\Shared\Domain\Collection;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 use Tests\Unit\Shared\Domain\Collection\Dummies\DummyArrayCollection;
 use Tests\Unit\Shared\Domain\Collection\Dummies\DummyCollection;
 use Tests\Unit\Shared\Domain\Collection\Dummies\DummyEnum;
@@ -14,17 +15,16 @@ use Tests\Unit\Shared\Domain\Collection\Dummies\DummyItem;
 use Tests\Unit\Shared\Domain\Collection\Dummies\DummyItemArray;
 use Tests\Unit\Shared\Domain\Collection\Dummies\DummySecondCollection;
 use Tests\Unit\Shared\Domain\Collection\Dummies\DummySecondItem;
-use stdClass;
 
 class CollectionTest extends TestCase
 {
-    public function testConstructFailedOnInvalidType(): void
+    public function test_construct_failed_on_invalid_type(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new DummyCollection([new stdClass()]);
+        new DummyCollection([new stdClass]);
     }
 
-    public function testCount(): void
+    public function test_count(): void
     {
         $expectedCount = 3;
 
@@ -36,7 +36,7 @@ class CollectionTest extends TestCase
         $this->assertEquals($expectedCount, $collection->count());
     }
 
-    public function testSomeReturnTrue(): void
+    public function test_some_return_true(): void
     {
         $valueToFind = 4;
 
@@ -50,7 +50,7 @@ class CollectionTest extends TestCase
         $this->assertTrue($collection->some(fn (DummyItem $item) => $item->value === $valueToFind));
     }
 
-    public function testSomeReturnFalse(): void
+    public function test_some_return_false(): void
     {
         $notExistingValueInCollection = 10;
 
@@ -64,7 +64,7 @@ class CollectionTest extends TestCase
         $this->assertFalse($collection->some(fn (DummyItem $item) => $item->value === $notExistingValueInCollection));
     }
 
-    public function testEveryReturnTrue(): void
+    public function test_every_return_true(): void
     {
         $collection = new DummyCollection([
             new DummyItem(1),
@@ -76,7 +76,7 @@ class CollectionTest extends TestCase
         $this->assertTrue($collection->some(fn (DummyItem $item) => $item->value !== 0));
     }
 
-    public function testEveryReturnFalse(): void
+    public function test_every_return_false(): void
     {
         $collection = new DummyCollection([
             new DummyItem(0),
@@ -88,7 +88,7 @@ class CollectionTest extends TestCase
         $this->assertTrue($collection->some(fn (DummyItem $item) => $item->value !== 0));
     }
 
-    public function testIsEqualTrue(): void
+    public function test_is_equal_true(): void
     {
         $sameValue = 2;
         $firstCollection = new DummyCollection([new DummyItem($sameValue), new DummyItem($sameValue + 1)]);
@@ -96,7 +96,7 @@ class CollectionTest extends TestCase
         $this->assertTrue($firstCollection->isEqual($secondCollection));
     }
 
-    public function testIsEqualWithOrderFalse(): void
+    public function test_is_equal_with_order_false(): void
     {
         $sameValue = 2;
         $firstCollection = new DummyCollection([new DummyItem($sameValue), new DummyItem($sameValue + 1)]);
@@ -104,7 +104,7 @@ class CollectionTest extends TestCase
         $this->assertFalse($firstCollection->isEqualWithOrder($secondCollection));
     }
 
-    public function testIsEqualWithOrderTrue(): void
+    public function test_is_equal_with_order_true(): void
     {
         $sameValue = 2;
         $firstCollection = new DummyCollection([new DummyItem($sameValue + 1), new DummyItem($sameValue)]);
@@ -112,14 +112,14 @@ class CollectionTest extends TestCase
         $this->assertTrue($firstCollection->isEqualWithOrder($secondCollection));
     }
 
-    public function testIsEqualFalse(): void
+    public function test_is_equal_false(): void
     {
         $firstCollection = new DummyCollection([new DummyItem(5)]);
         $secondCollection = new DummyCollection([new DummyItem(10)]);
         $this->assertFalse($firstCollection->isEqual($secondCollection));
     }
 
-    public function testMap(): void
+    public function test_map(): void
     {
         $itemValue = 5;
         $arrKey = 'testKey';
@@ -127,13 +127,13 @@ class CollectionTest extends TestCase
         $this->assertEquals([[$arrKey => $itemValue]], $collection->map(fn (DummyItem $item) => [$arrKey => $itemValue]));
     }
 
-    public function testIsEmpty(): void
+    public function test_is_empty(): void
     {
         $emptyCollection = new DummyCollection([]);
         $this->assertTrue($emptyCollection->isEmpty());
     }
 
-    public function testFilter(): void
+    public function test_filter(): void
     {
         $collection = new DummyCollection([
             new DummyItem(1),
@@ -152,7 +152,7 @@ class CollectionTest extends TestCase
 
     }
 
-    public function testFindSuccess(): void
+    public function test_find_success(): void
     {
         $findableValue = 25;
 
@@ -166,7 +166,7 @@ class CollectionTest extends TestCase
         $this->assertEquals($findableValue, $collection->find(fn (DummyItem $item) => $item->value === $findableValue)->value);
     }
 
-    public function testFindNull(): void
+    public function test_find_null(): void
     {
         $notExistingValue = 50;
 
@@ -180,7 +180,7 @@ class CollectionTest extends TestCase
         $this->assertNull($collection->find(fn (DummyItem $item) => $item->value === $notExistingValue));
     }
 
-    public function testMapSelfSuccess(): void
+    public function test_map_self_success(): void
     {
         $collection = new DummyCollection([new DummyItem(2), new DummyItem(4)]);
         $mappedCollection = $collection->mapSelf(fn (DummyItem $dummyItem) => new DummyItem($dummyItem->value * 2));
@@ -188,41 +188,41 @@ class CollectionTest extends TestCase
         $this->assertEquals(8, $mappedCollection->get(1)->value);
     }
 
-    public function testMapSelfFailedOnInvalidType(): void
+    public function test_map_self_failed_on_invalid_type(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $collection = new DummyCollection([new DummyItem(2)]);
-        $collection->mapSelf(fn (DummyItem $dummyItem) => new stdClass());
+        $collection->mapSelf(fn (DummyItem $dummyItem) => new stdClass);
     }
 
-    public function testPush(): void
+    public function test_push(): void
     {
         $collection = new DummyCollection([new DummyItem(0)]);
         $collection->push(new DummyItem(1));
         $this->assertCount(2, $collection);
     }
 
-    public function testPushNotAddingNull(): void
+    public function test_push_not_adding_null(): void
     {
         $collection = new DummyCollection([new DummyItem(0)]);
         $collection->push(null);
         $this->assertCount(1, $collection);
     }
 
-    public function testPushFailedOnInvalidType(): void
+    public function test_push_failed_on_invalid_type(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $collection = new DummyCollection([new DummyItem(0)]);
         $collection->push(new DummySecondItem(1));
     }
 
-    public function testGet(): void
+    public function test_get(): void
     {
         $collection = new DummyCollection([new DummyItem(0), new DummyItem(1), new DummyItem(2), new DummyItem(3)]);
         $this->assertEquals(3, $collection->get(3)->value);
     }
 
-    public function testMerge(): void
+    public function test_merge(): void
     {
         $collection1 = new DummyCollection([new DummyItem(0), new DummyItem(1)]);
         $collection2 = new DummyCollection([new DummyItem(3), new DummyItem(4)]);
@@ -230,7 +230,7 @@ class CollectionTest extends TestCase
         $this->assertCount(4, $merged);
     }
 
-    public function testMergeFailedOnInvalidType(): void
+    public function test_merge_failed_on_invalid_type(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $collection1 = new DummyCollection([new DummyItem(0), new DummyItem(1)]);
@@ -238,7 +238,7 @@ class CollectionTest extends TestCase
         $collection1->merge($collection2);
     }
 
-    public function testRemove(): void
+    public function test_remove(): void
     {
         $expectedCount = 2;
 
@@ -252,7 +252,7 @@ class CollectionTest extends TestCase
         $this->assertEquals($expectedCount, $collection->count());
     }
 
-    public function testBoxFromArray(): void
+    public function test_box_from_array(): void
     {
         $expectedCount = 3;
 
@@ -271,14 +271,14 @@ class CollectionTest extends TestCase
         $this->assertEquals(2, $collection->get(2)->value);
     }
 
-    public function testBoxFromEnumValues(): void
+    public function test_box_from_enum_values(): void
     {
         $elements = [DummyEnum::SOMETHING->value, DummyEnum::SOMETHING2->value, DummyEnum::SOMETHING->value, DummyEnum::SOMETHING2->value];
         $newCollection = DummyEnumCollection::boxFromEnumValues($elements);
         $this->assertInstanceOf(DummyEnumCollection::class, $newCollection);
     }
 
-    public function testBoxSimpleFromArray(): void
+    public function test_box_simple_from_array(): void
     {
         $expectedCount = 3;
         $array = [
@@ -301,7 +301,7 @@ class CollectionTest extends TestCase
         $this->assertEquals($array, $collection->unboxToArray());
     }
 
-    public function testBoxComplexFromArray(): void
+    public function test_box_complex_from_array(): void
     {
         $array = [
             [0, 'a'],
@@ -314,7 +314,7 @@ class CollectionTest extends TestCase
         $this->assertEquals($array, $collection->unboxToArray());
     }
 
-    public function testUnboxFromArray(): void
+    public function test_unbox_from_array(): void
     {
         $array = [
             0,
@@ -325,7 +325,7 @@ class CollectionTest extends TestCase
         $this->assertEquals($array, $collection->unboxToArray());
     }
 
-    public function testUnboxFromArrayComplex(): void
+    public function test_unbox_from_array_complex(): void
     {
         $array = [
             [0, 'a'],
@@ -336,7 +336,7 @@ class CollectionTest extends TestCase
         $this->assertEquals($array, $collection->unboxToArray());
     }
 
-    public function testBoxFromArrayComplex(): void
+    public function test_box_from_array_complex(): void
     {
         $expectedCount = 3;
 
@@ -358,7 +358,7 @@ class CollectionTest extends TestCase
         $this->assertEquals('c', $collection->get(2)->second);
     }
 
-    public function testFirst(): void
+    public function test_first(): void
     {
         $first = new DummyItem(1);
         $middle = new DummyItem(2);
@@ -372,7 +372,7 @@ class CollectionTest extends TestCase
         $this->assertEquals($first, $collection->first());
     }
 
-    public function testLast(): void
+    public function test_last(): void
     {
         $first = new DummyItem(1);
         $middle = new DummyItem(2);
@@ -386,7 +386,7 @@ class CollectionTest extends TestCase
         $this->assertEquals($last, $collection->last());
     }
 
-    public function testContainFind(): void
+    public function test_contain_find(): void
     {
         $collection = new DummyCollection([
             new DummyItem(0),
@@ -398,7 +398,7 @@ class CollectionTest extends TestCase
         $this->assertTrue($collection->contains(new DummyItem(0)));
     }
 
-    public function testContainNotFind(): void
+    public function test_contain_not_find(): void
     {
 
         $collection = new DummyCollection([

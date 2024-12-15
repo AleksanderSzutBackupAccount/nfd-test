@@ -19,8 +19,8 @@ readonly class Email extends NotEmptyString
 
     protected function validate(): void
     {
-        if (!filter_var($this->value, FILTER_VALIDATE_EMAIL)) {
-            throw new InvalidArgumentException('Invalid email address ' . $this->value);
+        if (! filter_var($this->value, FILTER_VALIDATE_EMAIL)) {
+            throw new InvalidArgumentException('Invalid email address '.$this->value);
         }
     }
 }

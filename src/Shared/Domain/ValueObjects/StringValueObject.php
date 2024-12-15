@@ -7,7 +7,7 @@ namespace Src\Shared\Domain\ValueObjects;
 use Src\Shared\Domain\ComparableInterface;
 use Stringable;
 
-abstract readonly class StringValueObject implements Stringable, ValueObjectInterface, ComparableInterface
+abstract readonly class StringValueObject implements ComparableInterface, Stringable, ValueObjectInterface
 {
     final public function __construct(public string $value)
     {
@@ -39,8 +39,7 @@ abstract readonly class StringValueObject implements Stringable, ValueObjectInte
     }
 
     /**
-     * @param self $compare
-     * @return bool
+     * @param  self  $compare
      */
     public function equals(ComparableInterface $compare): bool
     {

@@ -9,7 +9,7 @@ use Ramsey\Uuid\Uuid;
 use Src\Shared\Domain\ComparableInterface;
 use Stringable;
 
-abstract readonly class UuidValueObject implements Stringable, ValueObjectInterface, ComparableInterface
+abstract readonly class UuidValueObject implements ComparableInterface, Stringable, ValueObjectInterface
 {
     final public function __construct(public string $uuid)
     {
@@ -33,7 +33,7 @@ abstract readonly class UuidValueObject implements Stringable, ValueObjectInterf
 
     public function validate(): void
     {
-        if (!preg_match('/^[a-f\d]{8}(-[a-f\d]{4}){4}[a-f\d]{8}$/i', $this->uuid)) {
+        if (! preg_match('/^[a-f\d]{8}(-[a-f\d]{4}){4}[a-f\d]{8}$/i', $this->uuid)) {
             throw new InvalidArgumentException('Invalid UUID');
         }
     }
@@ -44,8 +44,7 @@ abstract readonly class UuidValueObject implements Stringable, ValueObjectInterf
     }
 
     /**
-     * @param self $compare
-     * @return bool
+     * @param  self  $compare
      */
     public function equals(ComparableInterface $compare): bool
     {

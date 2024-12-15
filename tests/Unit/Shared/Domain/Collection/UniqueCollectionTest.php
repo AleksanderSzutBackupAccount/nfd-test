@@ -20,7 +20,8 @@ class UniqueCollectionTest extends TestCase
     public function test_unique_empty(): void
     {
         $elements = [];
-        $collection = new class ($elements) extends Collection {
+        $collection = new class($elements) extends Collection
+        {
             protected function type(): string
             {
                 return DummyDto::class;
@@ -30,13 +31,14 @@ class UniqueCollectionTest extends TestCase
         $this->assertEmpty($collection->unique());
     }
 
-    public function test_unique_notEmpty(): void
+    public function test_unique_not_empty(): void
     {
         $dummyDto = new DummyDto(Str::random());
         $anotherDummyDto = new DummyDto(Str::random());
         $elements = [$dummyDto, $dummyDto, $anotherDummyDto, $anotherDummyDto];
 
-        $collection = new class ($elements) extends Collection {
+        $collection = new class($elements) extends Collection
+        {
             protected function type(): string
             {
                 return DummyDto::class;
@@ -48,10 +50,11 @@ class UniqueCollectionTest extends TestCase
         $this->assertEquals($anotherDummyDto->value, $unique->get(1)->value);
     }
 
-    public function test_unique_notEmpty_enum(): void
+    public function test_unique_not_empty_enum(): void
     {
         $elements = [DummyEnum::SOMETHING, DummyEnum::SOMETHING2, DummyEnum::SOMETHING, DummyEnum::SOMETHING2];
-        $collection = new class ($elements) extends Collection {
+        $collection = new class($elements) extends Collection
+        {
             protected function type(): string
             {
                 return DummyEnum::class;
@@ -63,10 +66,11 @@ class UniqueCollectionTest extends TestCase
         $this->assertContains(DummyEnum::SOMETHING2, $unique);
     }
 
-    public function test_boxEnumValue_atNotEnumCollection(): void
+    public function test_box_enum_value_at_not_enum_collection(): void
     {
         $elements = [new DummyNestedDto(new DummyDto(Str::random()))];
-        $collection = new class ($elements) extends Collection {
+        $collection = new class($elements) extends Collection
+        {
             protected function type(): string
             {
                 return DummyNestedDto::class;
@@ -76,12 +80,13 @@ class UniqueCollectionTest extends TestCase
         $collection::boxFromEnumValues($elements);
     }
 
-    public function test_getUnique_withClosure(): void
+    public function test_get_unique_with_closure(): void
     {
         $uniqueValue1 = Str::random();
         $uniqueValue2 = Str::random();
         $elements = [new DummyDto('test1', $uniqueValue1), new DummyDto('test2', $uniqueValue1), new DummyDto('test3', $uniqueValue2), new DummyDto('test4', $uniqueValue2)];
-        $collection = new class ($elements) extends Collection {
+        $collection = new class($elements) extends Collection
+        {
             protected function type(): string
             {
                 return DummyDto::class;
@@ -93,10 +98,11 @@ class UniqueCollectionTest extends TestCase
         $this->assertEquals($uniqueValue2, $result->get(1)->optionalUnique);
     }
 
-    public function test_getUnique_withComparable(): void
+    public function test_get_unique_with_comparable(): void
     {
         $elements = [new DummyEntity(1, 'test1'), new DummyEntity(2, 'test2'), new DummyEntity(1, 'test3'), new DummyEntity(2, 'test4')];
-        $collection = new class ($elements) extends Collection implements ComparableCollectionInterface {
+        $collection = new class($elements) extends Collection implements ComparableCollectionInterface
+        {
             protected function type(): string
             {
                 return DummyEntity::class;
@@ -113,10 +119,11 @@ class UniqueCollectionTest extends TestCase
         $this->assertEquals(2, $result->get(1)->id);
     }
 
-    public function test_unique_dummyComparableDto(): void
+    public function test_unique_dummy_comparable_dto(): void
     {
         $elements = [new DummyComparableDto('test1', 'unique1'), new DummyComparableDto('test2', 'unique2'), new DummyComparableDto('test3', 'unique1'), new DummyComparableDto('test4', 'unique2')];
-        $collection = new class ($elements) extends Collection {
+        $collection = new class($elements) extends Collection
+        {
             protected function type(): string
             {
                 return DummyComparableDto::class;
@@ -128,10 +135,11 @@ class UniqueCollectionTest extends TestCase
         $this->assertTrue($elements[1]->equals($result->get(1)));
     }
 
-    public function test_unique_dummyComparableDto_empty(): void
+    public function test_unique_dummy_comparable_dto_empty(): void
     {
         $elements = [];
-        $collection = new class ($elements) extends Collection {
+        $collection = new class($elements) extends Collection
+        {
             protected function type(): string
             {
                 return DummyComparableDto::class;

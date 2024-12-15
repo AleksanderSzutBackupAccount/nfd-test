@@ -7,7 +7,7 @@ namespace Src\Shared\Domain\ValueObjects;
 use Src\Shared\Domain\ComparableInterface;
 use Src\Shared\Domain\Exceptions\InvalidValueObjectException;
 
-readonly class PositiveNumber implements ValueObjectInterface, StringableValueObjectInterface, ComparableInterface
+readonly class PositiveNumber implements ComparableInterface, StringableValueObjectInterface, ValueObjectInterface
 {
     /**
      * @throws InvalidValueObjectException
@@ -21,7 +21,7 @@ readonly class PositiveNumber implements ValueObjectInterface, StringableValueOb
 
     public function __toString(): string
     {
-        return (string)$this->value;
+        return (string) $this->value;
     }
 
     public function value(): int
@@ -30,8 +30,7 @@ readonly class PositiveNumber implements ValueObjectInterface, StringableValueOb
     }
 
     /**
-     * @param self $compare
-     * @return bool
+     * @param  self  $compare
      */
     public function equals(ComparableInterface $compare): bool
     {

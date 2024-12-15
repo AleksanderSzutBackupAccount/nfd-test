@@ -12,7 +12,7 @@ use Src\Shared\Domain\ValueObjects\ValueObjectInterface;
 class ValueObjectsCast implements Castable
 {
     /**
-     * @param array<class-string<ValueObjectInterface>> $arguments
+     * @param  array<class-string<ValueObjectInterface>>  $arguments
      * @return CastsAttributes<mixed, mixed>
      */
     public static function castUsing(array $arguments): CastsAttributes
@@ -22,8 +22,8 @@ class ValueObjectsCast implements Castable
         }
 
         foreach ($arguments as $argument) {
-            if (!is_subclass_of($argument, ValueObjectInterface::class)) {
-                throw new InvalidArgumentException('Value mast not be an instance of ' . ValueObjectInterface::class);
+            if (! is_subclass_of($argument, ValueObjectInterface::class)) {
+                throw new InvalidArgumentException('Value mast not be an instance of '.ValueObjectInterface::class);
             }
         }
 
