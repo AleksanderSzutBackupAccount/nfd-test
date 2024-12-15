@@ -2,6 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::prefix('/api')->group(function () {
+    Route::group([], base_path('src/Company/UI/Http/api.php'));
 });
