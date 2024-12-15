@@ -68,12 +68,12 @@ final class CompanyControllerTest extends TestCase
         $this->assertDatabaseCount('companies', 0);
     }
 
-    public function getEndpoint(int $companyId): string
+    private function getEndpoint(int $companyId): string
     {
         return sprintf('api/companies/%s', $companyId);
     }
 
-    public function companyFactory(): CompanyEloquentModel
+    private function companyFactory(): CompanyEloquentModel
     {
         /** @var CompanyEloquentModel $companyEloquentModel */
         $companyEloquentModel = CompanyEloquentModel::factory()->create();
@@ -81,7 +81,7 @@ final class CompanyControllerTest extends TestCase
         return $companyEloquentModel;
     }
 
-    public function companyFactoryMany(int $count): Collection
+    private function companyFactoryMany(int $count): Collection
     {
         return CompanyEloquentModel::factory()->count($count)->create();
     }
@@ -89,7 +89,7 @@ final class CompanyControllerTest extends TestCase
     /**
      * @return string[]
      */
-    public function getPayload(): array
+    private function getPayload(): array
     {
         return [
             'name' => $this->faker->company,

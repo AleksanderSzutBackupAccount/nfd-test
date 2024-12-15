@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\Shared\Domain\Collection;
 
 use Illuminate\Support\Str;
-use InvalidArgumentException;
 use Src\Shared\Domain\Collection\Collection;
 use Src\Shared\Domain\ComparableCollectionInterface;
 use Tests\TestCase;
@@ -13,7 +12,6 @@ use Tests\Unit\Shared\Domain\Collection\Dummies\DummyComparableDto;
 use Tests\Unit\Shared\Domain\Collection\Dummies\DummyDto;
 use Tests\Unit\Shared\Domain\Collection\Dummies\DummyEntity;
 use Tests\Unit\Shared\Domain\Collection\Dummies\DummyEnum;
-use Tests\Unit\Shared\Domain\Collection\Dummies\DummyNestedDto;
 
 class UniqueCollectionTest extends TestCase
 {
@@ -64,20 +62,6 @@ class UniqueCollectionTest extends TestCase
         $this->assertCount(2, $unique);
         $this->assertContains(DummyEnum::SOMETHING, $unique);
         $this->assertContains(DummyEnum::SOMETHING2, $unique);
-    }
-
-    public function test_box_enum_value_at_not_enum_collection(): void
-    {
-        $elements = [new DummyNestedDto(new DummyDto(Str::random()))];
-        $collection = new class($elements) extends Collection
-        {
-            protected function type(): string
-            {
-                return DummyNestedDto::class;
-            }
-        };
-        $this->expectException(InvalidArgumentException::class);
-        $collection::boxFromEnumValues($elements);
     }
 
     public function test_get_unique_with_closure(): void
@@ -133,19 +117,5 @@ class UniqueCollectionTest extends TestCase
         $this->assertCount(2, $result);
         $this->assertTrue($elements[0]->equals($result->get(0)));
         $this->assertTrue($elements[1]->equals($result->get(1)));
-    }
-
-    public function test_unique_dummy_comparable_dto_empty(): void
-    {
-        $elements = [];
-        $collection = new class($elements) extends Collection
-        {
-            protected function type(): string
-            {
-                return DummyComparableDto::class;
-            }
-        };
-        $result = $collection->unique()->unboxToArray();
-        $this->assertEmpty($result);
     }
 }

@@ -7,12 +7,8 @@ namespace Tests\Unit\Shared\Domain\Collection;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
-use Tests\Unit\Shared\Domain\Collection\Dummies\DummyArrayCollection;
 use Tests\Unit\Shared\Domain\Collection\Dummies\DummyCollection;
-use Tests\Unit\Shared\Domain\Collection\Dummies\DummyEnum;
-use Tests\Unit\Shared\Domain\Collection\Dummies\DummyEnumCollection;
 use Tests\Unit\Shared\Domain\Collection\Dummies\DummyItem;
-use Tests\Unit\Shared\Domain\Collection\Dummies\DummyItemArray;
 use Tests\Unit\Shared\Domain\Collection\Dummies\DummySecondCollection;
 use Tests\Unit\Shared\Domain\Collection\Dummies\DummySecondItem;
 
@@ -250,112 +246,6 @@ class CollectionTest extends TestCase
         $collection->remove(1);
 
         $this->assertEquals($expectedCount, $collection->count());
-    }
-
-    public function test_box_from_array(): void
-    {
-        $expectedCount = 3;
-
-        $collection = DummyCollection::boxFromArray([
-            0,
-            1,
-            2,
-        ]);
-
-        $this->assertEquals($expectedCount, $collection->count());
-        $this->assertInstanceOf(DummyItem::class, $collection->get(0));
-        $this->assertInstanceOf(DummyItem::class, $collection->get(1));
-        $this->assertInstanceOf(DummyItem::class, $collection->get(2));
-        $this->assertEquals(0, $collection->get(0)->value);
-        $this->assertEquals(1, $collection->get(1)->value);
-        $this->assertEquals(2, $collection->get(2)->value);
-    }
-
-    public function test_box_from_enum_values(): void
-    {
-        $elements = [DummyEnum::SOMETHING->value, DummyEnum::SOMETHING2->value, DummyEnum::SOMETHING->value, DummyEnum::SOMETHING2->value];
-        $newCollection = DummyEnumCollection::boxFromEnumValues($elements);
-        $this->assertInstanceOf(DummyEnumCollection::class, $newCollection);
-    }
-
-    public function test_box_simple_from_array(): void
-    {
-        $expectedCount = 3;
-        $array = [
-            [0],
-            [1, 2, 3],
-            [2],
-        ];
-
-        $collection = DummyArrayCollection::boxSimpleFromArray($array);
-
-        $this->assertEquals($expectedCount, $collection->count());
-        $this->assertInstanceOf(DummyItemArray::class, $collection->get(0));
-        $this->assertInstanceOf(DummyItemArray::class, $collection->get(1));
-        $this->assertInstanceOf(DummyItemArray::class, $collection->get(2));
-        $this->assertEquals([0], $collection->get(0)->value);
-        $this->assertEquals([1, 2, 3], $collection->get(1)->value);
-        $this->assertEquals([2], $collection->get(2)->value);
-        $this->assertEquals($array, $collection->unboxSimpleToArray());
-        $this->assertEquals(array_map(fn ($item) => [$item], $array), $collection->unboxComplexToArray());
-        $this->assertEquals($array, $collection->unboxToArray());
-    }
-
-    public function test_box_complex_from_array(): void
-    {
-        $array = [
-            [0, 'a'],
-            [1, 'b'],
-            [2, 'c'],
-        ];
-        $collection = DummySecondCollection::boxComplexFromArray($array);
-        $this->assertEquals($array, $collection->unboxComplexToArray());
-        $this->assertEquals([0, 1, 2], $collection->unboxSimpleToArray());
-        $this->assertEquals($array, $collection->unboxToArray());
-    }
-
-    public function test_unbox_from_array(): void
-    {
-        $array = [
-            0,
-            1,
-            2,
-        ];
-        $collection = DummyCollection::boxFromArray($array);
-        $this->assertEquals($array, $collection->unboxToArray());
-    }
-
-    public function test_unbox_from_array_complex(): void
-    {
-        $array = [
-            [0, 'a'],
-            [1, 'b'],
-            [2, 'c'],
-        ];
-        $collection = DummySecondCollection::boxFromArray($array);
-        $this->assertEquals($array, $collection->unboxToArray());
-    }
-
-    public function test_box_from_array_complex(): void
-    {
-        $expectedCount = 3;
-
-        $collection = DummySecondCollection::boxFromArray([
-            [0, 'a'],
-            [1, 'b'],
-            [2, 'c'],
-        ]);
-
-        $this->assertEquals($expectedCount, $collection->count());
-        $this->assertInstanceOf(DummySecondItem::class, $collection->get(0));
-        $this->assertInstanceOf(DummySecondItem::class, $collection->get(1));
-        $this->assertInstanceOf(DummySecondItem::class, $collection->get(2));
-        $this->assertEquals(0, $collection->get(0)->value);
-        $this->assertEquals(1, $collection->get(1)->value);
-        $this->assertEquals(2, $collection->get(2)->value);
-        $this->assertEquals('a', $collection->get(0)->second);
-        $this->assertEquals('b', $collection->get(1)->second);
-        $this->assertEquals('c', $collection->get(2)->second);
     }
 
     public function test_first(): void

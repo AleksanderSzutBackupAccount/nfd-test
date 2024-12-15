@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Src\Company\Infrastructure\Eloquent;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Src\Shared\Infrastructure\Models\CastableModel;
 
 /**
@@ -17,7 +18,6 @@ use Src\Shared\Infrastructure\Models\CastableModel;
  */
 final class CompanyEloquentModel extends CastableModel
 {
-
     /** @use HasFactory<CompanyEloquentFactory> */
     use HasFactory;
 
@@ -31,6 +31,14 @@ final class CompanyEloquentModel extends CastableModel
     protected $dates = ['created_at', 'updated_at'];
 
     protected $casts = [];
+
+    /**
+     * @return HasMany<EmployeeEloquentModel, $this>
+     */
+    public function employees(): HasMany
+    {
+        return $this->hasMany(EmployeeEloquentModel::class);
+    }
 
     protected static function newFactory(): CompanyEloquentFactory
     {
