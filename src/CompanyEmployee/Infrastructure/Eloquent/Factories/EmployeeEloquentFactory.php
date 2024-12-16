@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Src\Company\Infrastructure\Eloquent\Factories;
+namespace Src\CompanyEmployee\Infrastructure\Eloquent\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Src\Company\Infrastructure\Eloquent\Models\EmployeeEloquentModel;
+use Src\CompanyEmployee\Infrastructure\Eloquent\Models\EmployeeEloquentModel;
 
 /**
  * @extends Factory<EmployeeEloquentModel>

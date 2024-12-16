@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Src\Company\Infrastructure\Eloquent\Models;
+namespace Src\CompanyEmployee\Infrastructure\Eloquent\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Src\Company\Infrastructure\Eloquent\Factories\EmployeeEloquentFactory;
+use Src\CompanyEmployee\Infrastructure\Eloquent\Factories\EmployeeEloquentFactory;
 use Src\Shared\Infrastructure\Models\CastableModel;
 
 /**

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Src\Company\Domain\Collections;
+namespace Src\CompanyEmployee\Domain;
 
 use Src\Company\Domain\Company;
 use Src\Shared\Domain\Collection\Collection;

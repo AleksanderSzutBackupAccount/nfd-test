@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Src\Company\UI\Http\Controllers;
+namespace Src\CompanyEmployee\UI\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Src\Company\Infrastructure\Eloquent\Models\EmployeeEloquentModel;
+use Src\CompanyEmployee\Infrastructure\Eloquent\Models\EmployeeEloquentModel;
 
 final class EmployeeController extends Controller
 {

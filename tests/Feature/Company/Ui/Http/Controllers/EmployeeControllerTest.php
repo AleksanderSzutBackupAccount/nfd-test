@@ -9,7 +9,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 use Src\Company\Infrastructure\Eloquent\Models\CompanyEloquentModel;
-use Src\Company\Infrastructure\Eloquent\Models\EmployeeEloquentModel;
+use Src\CompanyEmployee\Infrastructure\Eloquent\Models\EmployeeEloquentModel;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
