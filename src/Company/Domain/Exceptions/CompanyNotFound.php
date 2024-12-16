@@ -17,7 +17,7 @@ namespace Src\Company\Domain\Exceptions;
 
      public function errorCode(): string
      {
-         return 'video_not_found';
+         return 'company_not_found';
      }
 
      protected function errorMessage(): string
