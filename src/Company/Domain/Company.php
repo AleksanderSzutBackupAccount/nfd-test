@@ -33,7 +33,7 @@ final class Company extends AggregateRoot
         return $company;
     }
 
-    public  function update(
+    public function update(
         CompanyName $name,
         CompanyFullAddress $address,
     ): void {

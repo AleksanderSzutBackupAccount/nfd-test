@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
 use Src\Company\UI\Http\Controllers\CompanyController;
-use Src\CompanyEmployee\UI\Http\Controllers\EmployeeController;
 
 Route::prefix('companies')->group(function () {
     Route::post('/', [CompanyController::class, 'create']);

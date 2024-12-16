@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Src\Company\Domain\ValueObjects;
+namespace Src\CompanyEmployee\Domain\ValueObjects;
 
 use Src\Shared\Domain\ValueObjects\UuidValueObject;
 

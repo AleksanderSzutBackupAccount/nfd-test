@@ -29,7 +29,7 @@ final readonly class CompanyEloquentRepository implements CompanyRepositoryInter
     public function findById(CompanyId $id): ?Company
     {
         $company = CompanyEloquentModel::query()->find($id);
-        if($company === null) {
+        if ($company === null) {
             return null;
         }
 

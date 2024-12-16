@@ -17,7 +17,7 @@ final class EmployeeControllerTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
-    private const JSON_STRUCTURE = ['id', 'first_name', 'last_name', 'email', 'phone', 'company_id'];
+    private const JSON_STRUCTURE = ['id', 'first_name', 'last_name', 'email', 'phone'];
 
     public function test_create_success(): void
     {
