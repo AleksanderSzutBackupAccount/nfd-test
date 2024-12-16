@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Src\Company\Application\Create;
+namespace Src\Company\Application\UseCases\Create;
 
 use Src\Shared\Domain\Bus\CommandInterface;
 

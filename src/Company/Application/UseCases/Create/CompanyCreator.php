@@ -2,28 +2,27 @@
 
 declare(strict_types=1);
 
-namespace Src\Company\Application\Update;
+namespace Src\Company\Application\UseCases\Create;
 
+use Src\Company\Domain\Company;
 use Src\Company\Domain\CompanyFullAddress;
 use Src\Company\Domain\CompanyRepositoryInterface;
-use Src\Company\Domain\Finders\CompanyFinder;
 use Src\Company\Domain\ValueObjects\CompanyId;
 use Src\Company\Domain\ValueObjects\CompanyName;
+use Src\Company\Domain\ValueObjects\CompanyNip;
 use Src\Shared\Domain\Bus\EventBusInterface;
 
-final readonly class CompanyUpdater {
-
+final readonly class CompanyCreator
+{
     public function __construct(
         private CompanyRepositoryInterface $repository,
-        private EventBusInterface $eventBus, private CompanyFinder $finder)
-    {
-    }
+        private EventBusInterface $eventBus,
+    ) {}
 
-    public function update(CompanyId $id, CompanyName $name, CompanyFullAddress $fullAddress): void
+    public function create(CompanyId $id, CompanyName $name, CompanyNip $nip, CompanyFullAddress $fullAddress): void
     {
-        $company = $this->finder->find($id);
+        $company = Company::create($id, $name, $nip, $fullAddress);
 
-        $company->update($name, $fullAddress);
         $this->repository->save($company);
         $this->eventBus->publish(...$company->pullDomainEvents());
     }

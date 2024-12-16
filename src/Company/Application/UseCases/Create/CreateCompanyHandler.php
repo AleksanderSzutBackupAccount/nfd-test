@@ -2,28 +2,28 @@
 
 declare(strict_types=1);
 
-namespace Src\Company\Application\Update;
+namespace Src\Company\Application\UseCases\Create;
 
-use Src\Company\Application\Create\CompanyCreator;
-use Src\Company\Application\Create\CreateCompanyCommand;
 use Src\Company\Domain\CompanyFullAddress;
 use Src\Company\Domain\ValueObjects\CompanyAddress;
 use Src\Company\Domain\ValueObjects\CompanyCity;
 use Src\Company\Domain\ValueObjects\CompanyId;
 use Src\Company\Domain\ValueObjects\CompanyName;
+use Src\Company\Domain\ValueObjects\CompanyNip;
 use Src\Company\Domain\ValueObjects\CompanyPostalCode;
-use Src\Shared\Domain\Bus\CommandInterface;
 
-final readonly class UpdateCompanyHandler implements CommandInterface {
+final readonly class CreateCompanyHandler
+{
     public function __construct(
-        private CompanyUpdater $companyUpdater,
+        private CompanyCreator $companyCreator,
     ) {}
 
-    public function handle(UpdateCompanyCommand $command): void
+    public function handle(CreateCompanyCommand $command): void
     {
-        $this->companyUpdater->update(
+        $this->companyCreator->create(
             new CompanyId($command->id),
             new CompanyName($command->name),
+            new CompanyNip($command->nip),
             new CompanyFullAddress(
                 new CompanyCity($command->city),
                 new CompanyPostalCode($command->postalCode),

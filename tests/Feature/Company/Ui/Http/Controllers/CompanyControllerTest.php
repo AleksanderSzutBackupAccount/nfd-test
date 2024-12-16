@@ -54,6 +54,12 @@ final class CompanyControllerTest extends TestCase
         $response->assertJsonStructure(self::JSON_STRUCTURE);
     }
 
+    public function test_get_failed_not_found(): void
+    {
+        $response = $this->get($this->getEndpoint($this->faker->uuid));
+        $response->assertStatus(JsonResponse::HTTP_NOT_FOUND);
+    }
+
     public function test_update_success(): void
     {
         $companyEloquentModel = $this->companyFactory();
@@ -64,11 +70,26 @@ final class CompanyControllerTest extends TestCase
         $this->assertDatabaseHas('companies', $payload);
     }
 
+    public function test_update_failed_not_found(): void
+    {
+        $payload = $this->getPayload();
+        $response = $this->put($this->getEndpoint($this->faker->uuid), $payload);
+        $response->assertStatus(JsonResponse::HTTP_NOT_FOUND);
+        $this->assertDatabaseEmpty('companies');
+    }
+
     public function test_delete_success(): void
     {
         $companyEloquentModel = $this->companyFactory();
-        $response = $this->delete($this->getEndpoint($companyEloquentModel->id), $this->getPayload());
+        $response = $this->delete($this->getEndpoint($companyEloquentModel->id));
         $response->assertStatus(JsonResponse::HTTP_OK);
+        $this->assertDatabaseCount('companies', 0);
+    }
+
+    public function test_delete_failed_not_found(): void
+    {
+        $response = $this->delete($this->getEndpoint($this->faker->uuid));
+        $response->assertStatus(JsonResponse::HTTP_NOT_FOUND);
         $this->assertDatabaseCount('companies', 0);
     }
 

@@ -6,14 +6,17 @@ namespace Src\Company\UI\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Ramsey\Uuid\Uuid;
-use Src\Company\Application\Create\CreateCompanyCommand;
-use Src\Company\Application\Update\UpdateCompanyCommand;
+use Src\Company\Application\Queries\FindCompanyQuery;
+use Src\Company\Application\Queries\GetCompaniesQuery;
+use Src\Company\Application\UseCases\Create\CreateCompanyCommand;
+use Src\Company\Application\UseCases\Delete\DeleteCompanyCommand;
+use Src\Company\Application\UseCases\Update\UpdateCompanyCommand;
 use Src\Company\Domain\Exceptions\CompanyNotFound;
-use Src\Company\Infrastructure\Eloquent\Models\CompanyEloquentModel;
 use Src\Company\UI\Http\Requests\CreateCompanyRequest;
 use Src\Company\UI\Http\Requests\UpdateCompanyRequest;
+use Src\Company\UI\Http\Resources\CompanyResource;
+use Src\Company\UI\Http\Resources\CompanyResourceCollection;
 use Src\Shared\Application\Bus\CommandHandlerInterface;
 
 final class CompanyController extends Controller
@@ -32,20 +35,22 @@ final class CompanyController extends Controller
                 $request->address
             )
         );
+
         return new JsonResponse([], JsonResponse::HTTP_CREATED);
     }
 
-    public function index(): JsonResponse
+    public function index(GetCompaniesQuery $query): CompanyResourceCollection
     {
-        return new JsonResponse(CompanyEloquentModel::all()->toArray());
+        return new CompanyResourceCollection($query->get());
     }
 
-    public function get(string $id): JsonResponse
+    public function get(string $id, FindCompanyQuery $query): CompanyResource
     {
-        /** @var CompanyEloquentModel $company */
-        $company = CompanyEloquentModel::query()->findOrFail($id);
-
-        return new JsonResponse($company->toArray());
+        try {
+            return new CompanyResource($query->get($id));
+        } catch (CompanyNotFound $e) {
+            abort(404, $e->getMessage());
+        }
     }
 
     public function update(UpdateCompanyRequest $request, string $id): JsonResponse
@@ -60,6 +65,7 @@ final class CompanyController extends Controller
                     $request->address
                 )
             );
+
             return new JsonResponse([]);
         } catch (CompanyNotFound $exception) {
             return new JsonResponse($exception->getMessage(), JsonResponse::HTTP_NOT_FOUND);
@@ -68,10 +74,18 @@ final class CompanyController extends Controller
 
     public function delete(string $id): JsonResponse
     {
-        /** @var CompanyEloquentModel $company */
-        $company = CompanyEloquentModel::query()->findOrFail($id);
-        $company->deleteOrFail();
+        try {
 
-        return new JsonResponse([]);
+            $this->commandHandler->handle(
+                new DeleteCompanyCommand(
+                    $id,
+                )
+            );
+
+            return new JsonResponse;
+
+        } catch (CompanyNotFound $e) {
+            return new JsonResponse($e->getMessage(), JsonResponse::HTTP_NOT_FOUND);
+        }
     }
 }

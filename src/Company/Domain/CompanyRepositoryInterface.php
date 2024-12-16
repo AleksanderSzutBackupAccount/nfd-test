@@ -15,5 +15,5 @@ interface CompanyRepositoryInterface
 
     public function save(Company $company): void;
 
-    public function delete(Company $company): void;
+    public function delete(CompanyId $id): void;
 }
