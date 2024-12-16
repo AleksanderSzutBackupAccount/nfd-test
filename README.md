@@ -2,4 +2,4 @@ Company zrobiłem w DDD, employee miałem rozdzielić jako osobny kontekt i doda
 Projekt zawiera:
  - Phpstan - 10 lvl
  - Pint
- - Deptrac (do sprawdzania infrastuktury)
+ - Deptrac (do sprawdzania zależności w ddd)
